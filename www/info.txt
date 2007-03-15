@@ -1,0 +1,15 @@
+
+# Contact info submission
+
+url: babaei.net/
+site_owner: M.S. Babaei
+address1: 15 Tirandaz St. 
+address2: Hevdeh Shahrivar Ave.
+city: Kermanshah
+state: Kermanshah
+country: Iran
+postal_code: 67146-19354
+phone_number:  98-831-8231452
+display_email: ace.of.zerosync@gmail.com
+site_name: 
+site_description: 

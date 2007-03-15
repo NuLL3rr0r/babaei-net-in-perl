@@ -1,0 +1,639 @@
+$main::httpHeader = "Content-Type: text/html; charset=utf-8\n\n";
+$main::alice = qq(<span class="boldTextErr">Alice is not in Wonderland.</span>);
+
+my $myMail = 'ace.of.zerosync@gmail.com';
+my $myMailInfo = qq("M.S. Babaei" <$myMail>);
+
+my $browser = new String($ENV{'HTTP_USER_AGENT'});
+my $isGecko = $browser =~ m/Gecko/;
+my $isFirefox  = $browser =~ m/Firefox/;
+my $isMSIE = $browser =~ m/MSIE/;
+my $isOpera = $browser =~ m/Opera/;
+my $isKHTML = $browser =~ m/KHTML/;
+my $isNavigator = $browser =~ m/Navigator/;
+my $isFlock  = $browser =~ m/Flock/;
+my $isBrowser = ($isGecko or $isMSIE or $isOpera or $isKHTML);
+
+sub CheckBrowser {
+	if ($main::req eq 'errajax') {
+		print qq(<title>The Official Website of M.S. Babaei</title><h4 style="font-weight:bold;color:#990000;">Your browser doesn't support AJAX...<br/><br/><span style="color:#203070;">For continue we recommends <a href="http://www.getfirefox.com/" target="_blank" title="Get Firefox"><img src="http://www.mozilla.org/products/firefox/buttons/firefox_80x15.png" alt="Mozilla Firefox" border="0" /></a></span></h4>);
+		exit;
+	}
+	
+	if ($isMSIE) {
+		my $reqIEVer = 7;
+		my $pos = $browser->indexOf("MSIE");
+		if ($pos > -1) {
+			my $pos2 = $browser->indexOf(";", $pos);
+			$pos += 5;
+			my $detIEVer = substr($browser, $pos, $pos2 - $pos);
+			if($detIEVer < $reqIEVer) {
+				print qq(<title>The Official Website of M.S. Babaei</title><h4 style="font-weight:bold;color:#990000;">You're using old version of Microsoft Internet Explorer and that's not compatible with this website, To view this website you must have Microsoft Internet Explorer 7.0 or earlier version (which closer to web standards)...<br/><br/>IE$detIEVer is not compliant with web standards of our days; It' s buggy and dead, forget it...<br/><br/><br/><span style="color:#203070;">For continue we recommends <a href="http://www.getfirefox.com/" target="_blank" title="Get Firefox"><img src="http://www.mozilla.org/products/firefox/buttons/firefox_80x15.png" alt="Mozilla Firefox"/></a></span></h4>);
+				exit;
+			}
+		}
+	}
+	
+	if ($browser =~ m/Googlebot/) {
+		my $ip = ClientIP();
+		my $url = "http://" . $ENV{'HTTP_HOST'} . $ENV{'REQUEST_URI'};
+		my $date = localtime(time);
+
+		my $to = $myMailInfo;
+		my $from =  qq("Googlebot Listener" <gbot@babaei.net>);
+		my $subject =  "Babaei.net :: Googlebot Deteced";
+		my $body;
+	
+		$body .= "<br /><br /><br /><strong>Page Crawled By Googlebot</strong>";
+		$body .= "<br /><blockquote>$url</blockquote>";
+		$body .= "<br /><br /><strong>By Google Server At</strong>";
+		$body .= "<br /><blockquote>$ip</blockquote>";
+		$body .= "<br /><br /><strong>Crawl Date</strong>";
+		$body .= "<br /><blockquote>$date</blockquote>";
+	
+		SendMail($to, $from, $subject, $body);
+	}
+}
+
+sub CheckXSS {
+	foreach (@_) {
+		if ($_ =~ /[<>]/) {
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
+sub FoundXSS {
+	return CheckXSS($main::req, $main::type, $main::id, $main::targetmail, $main::cid, $main::fid, $main::from, $main::subject, $main::body, $main::sender, $main::url);
+}
+
+sub BadParamUsage {
+	foreach (@_) {
+		if ($_ ne '') {
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
+sub NullParamUsage {
+	foreach (@_) {
+		if ($_ eq '') {
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
+sub BadRequest {
+	if ($main::req eq '' and $main::type ne '')	{
+		return 1;
+	}
+	
+	if ($main::req eq 'articles' and $main::id eq '' and $main::targetmail ne '') {
+		return 1;
+	}
+
+	if ($main::req eq 'articles' and ($main::id ne '' or $main::targetmail ne '') and ($main::cid ne '' or $main::fid ne '')) {
+		return 1;
+	}
+	
+	if (($main::cid eq '' and $main::fid ne '') or ($main::cid ne '' and $main::fid eq '')) {
+		return 1;
+	}
+
+	if ($main::req eq '' and BadParamUsage($main::type, $main::id, $main::targetmail, $main::cid, $main::fid, $main::from, $main::subject, $main::body, $main::sender, $main::url)) {
+		return 1;
+	}
+	
+	if ($main::type ne '' and (BadParamUsage($main::targetmail, $main::cid, $main::fid, $main::from, $main::subject, $main::body, $main::sender, $main::url))) {
+		return 1;
+	}
+
+	if ($main::req eq 'articles' and (BadParamUsage($main::from, $main::subject, $main::body, $main::sender, $main::url))) {
+		return 1;
+	}
+	
+	if ($main::req eq 'comments' and BadParamUsage($main::id, $main::targetmail, $main::cid, $main::fid)) {
+		return 1;
+	}
+	
+	if ($main::req eq 'comments' and NullParamUsage($main::from, $main::subject, $main::body, $main::sender)) {
+		return 1;
+	}
+
+	my @requests = ('', 'aboutus', 'articles', 'bio', 'comments', 'contactus', 'links', 'main');
+	my @types = ('', 'ajax');
+	
+	my $bad = 1;
+	
+	foreach (@types) {
+		if ($_ eq $main::type) {
+			$bad = 0;
+			last;
+		}
+	}
+	
+	if ($bad) {
+		return 1;
+	}
+	
+	$bad = 1;
+	
+	foreach (@requests) {
+		if ($_ eq $main::req) {
+			$bad = 0;
+			last;
+		}
+	}
+	
+	if ($bad) {
+		return 1;
+	}
+	
+	return 0;
+}
+
+
+sub ClientIP {
+	return "$ENV{'REMOTE_ADDR'}";
+}
+
+sub VisitorClientIP {
+	my $cIP = ClientIP();
+	return qq(Your IP Address is: $cIP);
+}
+
+sub MailClientIP {
+	my $cIP = ClientIP();
+	return qq(<p style="text-align: right;">Requested By Client IP: <span style="color: #FF0000;">$cIP</span></p>);
+}
+
+sub RandQuote {
+	my $xml = new XML::Simple;
+	my $quotes = $xml->XMLin("../restricted/quotes.xml", forcearray => 1);
+	my $xmlp = $xml->XMLout($quotes);
+
+	my $celebes = $quotes->{"celeb"};
+	my @celebesName = keys(%$celebes);
+	my $celebesNum = @celebesName;
+
+	my $pickedCeleb = @celebesName[int(rand($celebesNum))];
+
+	my $quotes = $celebes->{$pickedCeleb};
+	$quotes = $quotes->{"quote"};
+	my $quotesNum = @$quotes;
+
+	my $pickedQuote =@$quotes[int(rand($quotesNum))];
+	$pickedQuote = $pickedQuote->{"msg"};
+
+	return qq(Random quote:<br /><blockquote>$pickedQuote&nbsp;&nbsp;&nbsp;&nbsp;$pickedCeleb</blockquote>);
+}
+
+sub Firefox {
+	return ($isFirefox == 1 and $isNavigator == 0 and $isFlock == 0) ? "" : qq(<div style="position: relative; text-align: center;"><a href="http://www.getfirefox.com/" target="_blank"><img src="http://sfx-images.mozilla.org/affiliates/Buttons/firefox2/468x60FF2b_Orange.png" width="468" height="60" border="0" alt="Mozilla Firefox" title="Get Firefox - Rediscover the web" /></a></div>);
+}
+
+sub ReadLayout {
+	my $vcIP = VisitorClientIP();
+	my $rQuote = RandQuote();
+	my $firefox = Firefox();
+	
+	my $contents;
+	my $js = "javascript:;";
+	my $fpg;
+	
+	my $ie = $isMSIE == 0 ? "" : qq(<!--[if IE]><style type="text/css">\@import "layout-ie.css";</style><![endif]-->);
+	
+	my $pg = join("", ReadPage("layout"));
+	
+	$pg =~ s/{IE Style}/$ie/;
+	$pg =~ s/{IP Address}/$vcIP/;
+	$pg =~ s/{Random Quote}/$rQuote/;
+	$pg =~ s/{Firefox}/$firefox/;
+		
+	if ($isBrowser) {
+		$contents = qq(<noscript class="boldTextErr">Your browser doesn't support JavaScript, or JavaScript doesn't enable on your browser...</noscript>);
+
+		$fpg = $main::req eq "" ? SetScript("fetchPage('main');") : SetScript(($main::id eq '' ? "fetchPage('$main::req');" : "fetchArticle('$main::id');"));
+	
+		$pg =~ s/{req_main}/$js/;
+		$pg =~ s/{req_articles}/$js/;
+		$pg =~ s/{req_bio}/$js/;
+		$pg =~ s/{req_links}/$js/;
+		$pg =~ s/{req_contactus}/$js/;
+		$pg =~ s/{req_aboutus}/$js/;
+		$pg =~ s/{Contents}/$contents/;
+	}
+	else {
+		$contents = join("", ReadPage());
+		
+		$fpg = "";
+		
+		$pg =~ s/{req_main}/./;
+		$pg =~ s/{req_articles}/?req=articles/;
+		$pg =~ s/{req_bio}/?req=bio/;
+		$pg =~ s/{req_links}/?req=links/;
+		$pg =~ s/{req_contactus}/?req=contactus/;
+		$pg =~ s/{req_aboutus}/?req=aboutus/;
+	}
+		
+	$pg =~ s/{Contents}/$contents/;
+	$pg =~ s/{Fetch Page}/$fpg/;
+	
+	return "$pg";
+}
+
+sub ReadPage {
+	my $req = $_[0];
+
+	if ($main::req ne "articles" or $req ne "") {
+		my @lines;
+
+		my $pg;
+	
+		if ($req ne "") {
+			$pg = "$req.html";
+		}
+		else {
+			if ($main::req eq "") {
+				$pg = "req_main.html";
+			}
+			else {
+				$pg = "req_$main::req.html";
+			}
+		}
+	
+		open (PAGE, "<:utf8", "../restricted/$pg") || Error ("open", "page you requested");
+		flock (PAGE, 1);
+		@lines = <PAGE>;
+		close(PAGE);
+
+		return join("", @lines);
+	}
+	else {
+		return ReadArticles();
+	}
+}
+
+sub SetArticleProperty {
+	my $property = $_[0];
+	my $value = $_[1];
+	
+	if ($value eq "") {
+		$value = "-----------------";
+	}
+	
+	my $result = qq(<div class="row">);
+	
+	$result .= qq(<div class="col1">);
+	$result .= qq($property);
+	$result .= qq(</div>);
+	
+	$result .= qq(<div class="col2">);
+	$result .= qq(:);
+	$result .= qq(</div>);
+	
+	$result .= qq(<div class="col3">);
+	$result .= qq($value);
+	$result .= qq(</div>);
+	
+	$result .= qq(</div>);
+	
+	return $result;
+}
+
+sub ReadArticles {
+	my $xml = new XML::Simple;
+	my $articles = $xml->XMLin("../restricted/articles.xml", forcearray => 1);
+	my $xmlp = $xml->XMLout($articles);
+
+	$articles = $articles->{"article"};
+	my @ids = keys(%$articles);
+
+	my $result;
+	
+	my $title;
+	my $date;
+	my $file;
+	my $pw;
+	my $size;
+	my $refs;
+	my $ref;
+	my $src;
+
+	if ($main::id eq '') {
+		$result .= qq(<center><span class="boldTextErr">Most of these articles use <a href="http://www.adobe.com/products/flashpaper/" target="_blank">Macromedia FlashPaper 2</a> format;<br/>To view these articles you must have Flash Player; You can download it <a href="Adobe Flash Player 10.exe">here</a></span></center>);
+		$result .= qq(<span class="boldText">);
+		$result .= qq(<blockquote>);
+		$result .= qq(<h3>Articles:</h3>);
+		$result .= qq(<blockquote><blockquote>);
+		
+		$result .= qq(<div class="dvArticles">);
+		
+		#sorting desc order
+		@ids = sort {$b cmp $a} (@ids);
+		
+		foreach (@ids) {
+			#my $id = $_;
+			my $id = $articles->{$_}->{"id"};
+			$title = $articles->{$_}->{"title"};
+			$date = $articles->{$_}->{"date"};
+			
+			$refs = $articles->{$_}->{"ref"};
+			$ref = "";
+			
+			foreach (@$refs) {
+				$src = $_->{"src"};
+				$ref .= qq(<a href="$src">$src</a><br/>);
+			}
+
+			my $url;
+			my $far;
+			
+			if ($isBrowser) {
+				$url = "javascript:;";
+				$far = qq( onclick="fetchArticle('$id');");
+			}
+			else {
+				$url = "?req=articles&id=$id";
+				$far = "";
+			}
+			
+			$result .= qq(<div class="dvArticle">);
+			
+			$result .= qq(<div class="title">);
+			$result .= qq(<a href="$url"$far title="$title">$title</a>);
+			$result .= qq(</div>);
+			
+			$result .= SetArticleProperty("Article ID", $id);
+			$result .= SetArticleProperty("Release Date", $date);
+			#$result .= SetArticleProperty("References", $ref);
+			
+			$result .= qq(</div>);
+		}
+		
+		$result .= qq(</div>);
+
+		$result .=  qq(</blockquote></blockquote>);
+		$result .=  q(</blockquote>);
+		$result .=  qq(</span>);
+		return $result;
+	}
+	else {
+		my $found = 0;
+
+		foreach (@ids) {
+			#if ($_ eq $id) {
+			if ($articles->{$_}->{"id"} eq $id) {
+				$title = $articles->{$_}->{"title"};
+				$date = $articles->{$_}->{"date"};
+				$file = $articles->{$_}->{"file"};
+				$pw = $articles->{$_}->{"pw"};
+				$size = $articles->{$_}->{"size"};
+				
+				$refs = $articles->{$_}->{"ref"};
+				$ref;
+
+				foreach (@$refs) {
+					$src = $_->{"src"};
+					$ref .= qq(<a href="$src">$src</a><br/>);
+				}
+
+				$found = 1;
+				last;
+			}
+		}
+
+		if ($found) {
+			$result .= qq(<br />);
+			$result .= qq(<span class="boldText">);
+			$result .= qq(<center>);
+
+			if ($main::targetmail eq '') {
+				$result .=  qq(<h3>To download this article you must register.<br />Please enter your email address below and register</h3>);
+				$result .= qq(Email:&nbsp;<input type="text" style="border: 1px solid #000000;" id="targetMail" onkeypress="javascript: if (event.which == 13) getArticle('$id');" />&nbsp;<input type="button" value="Get In" style="border: 1px solid #000000;" onclick="getArticle('$id');" />);
+				$result .= qq(<div id="dvStatusArticle"></div>);
+				$result .= qq(<br />);
+
+				$result .= qq(<div class="dvArticle" style="min-width:400px;max-width:400px;">);
+				$result .= qq(<div class="title">);
+				$result .= "$title";
+				$result .= qq(</div>);
+				$result .= SetArticleProperty("Article ID", $id);
+				#$result .= SetArticleProperty("Date Published", $date);
+				$result .= SetArticleProperty("Release Date", $date);
+				$result .= SetArticleProperty("File Name", $file);
+				$result .= SetArticleProperty("Password", $pw);
+				$result .= SetArticleProperty("File Size", $size);
+				$result .= SetArticleProperty("References", $ref);
+				$result .= qq(</div>);
+			}
+			else {
+				open (REG, "<:utf8", "../restricted/articles.reg") || Error ("register", "your mail address");
+				flock (REG, 1);
+				@lines = <REG>;
+				close(REG);
+
+				my $list = join("", @lines);
+				$list =~ s/<\/dwndlist>//;
+				
+				my $key;
+				while (1) {
+					$key = KeyGen();
+					my $isDup = $list =~ m/$key/;
+					if ($isDup == 0) {
+						last;
+					}
+				}
+				
+				$title =~ s/&/&amp;/;
+				
+				open (REG, ">:utf8", "../restricted/articles.reg") || Error ("register", "your mail address");
+				flock (REG, 2);
+				print REG $list;
+				print REG qq(\t<dwnd fid="$id" title="$title" target="$main::targetmail" cid="$key" />\n</dwndlist>);
+				close (REG);
+
+				$title =~ s/&amp;/&/;
+				
+				my $mcIP = MailClientIP();
+				my $link = "http://www.babaei.net/?req=articles&cid=$key&fid=$id";
+				
+				my $to = $myMailInfo;
+				my $from = $main::targetmail;
+				my $subject = "Article Request: $title / $main::targetmail";
+				
+				my $client = qq(<h3>Client</h3><blockquote><table><tr><td width="50">ID</td><td width="15">-</td>$key<td></td></tr><tr><td>E-Mail</td><td>-</td><td>$main::targetmail</td></tr></table></blockquote><br />);
+				my $start = qq(<div style="font-family: Tahoma; letter-spacing: 1px;">$mcIP);
+				my $stop = qq(<h3>Article</h3><blockquote><table><tr><td width="110">ID</td><td width="15">-</td>$id<td></td></tr><tr><td valign="top">Title</td><td>-</td><td>$title</td></tr></tr><tr><td>Release Date</td><td>-</td><td>$date</td></tr></tr></tr><tr><td>File Name</td><td>-</td><td>$file</td></tr></tr><tr><td>Password</td><td>-</td><td>$pw</td></tr></tr><tr><td>File Size</td><td>-</td><td>$size</td></tr><tr><td valign="top">References</td><td>-</td><td>$ref</td></tr></table></blockquote><br /><h3>Download Link</h3><p><a href="$link" title="$title">$link</a></p></div>);
+				
+				my $body = $start . $client . $stop;
+					
+				if (SendMail($to, $from, $subject, $body)) {
+					$to = $main::targetmail;
+					$from = $myMailInfo;
+					$subject = "Article Download Link from Babaei.net: $title";
+					my $body = $start . $stop;
+						
+					if (SendMail($to, $from, $subject, $body)) {
+						$result .= "Thanks for your registeration.<br/>Now the article download link is in your inbox.<br/>Just follow it...";
+					}
+				}
+			}
+				
+			$result .= qq(</center>);
+			$result .= qq(</span>);
+		}
+		else {
+			$result .= $main::alice;
+		}
+	}
+	
+	return $result;				
+}
+
+sub SetScript {
+	return qq(<script language="javascript">$_[0]</script>);
+}
+
+sub SendComments {
+	my $to = $myMailInfo;
+	my $from = qq("$sender" <$main::from>');
+
+	my $mcIP = MailClientIP();
+	
+	my $body = qq(<div style="font-family: Tahoma; letter-spacing: 1px;">$mcIP<h3>Detail</h3><p>Name - $main::sender<br />E-Mail - $main::from<br />URL - $main::url</p><br /><h3>Subject</h3><p>$main::subject</p><h3>Message</h3><p>$main::body</p></div>);
+	
+	$body =~ s/~~~/<br \/>/g;
+	
+	my $subject = "a user of Babaei.net / $sender - [$subject]";
+
+	if (SendMail($to, $from, $subject, $body)) {
+		print qq(<center><br/><span class="boldText">Thanks for your comments.</span><center>);
+	}
+	
+	exit;
+}
+
+sub SendMail {
+	my $to = $_[0];
+	my $from =  $_[1];
+	my $subject =  $_[2];
+	my $body =  $_[3];
+	
+	open (MAIL, "|/usr/sbin/sendmail -t") || Error('open', 'mail program');
+
+	print MAIL "To: $to\n";
+	print MAIL "From: $from\n";
+	print MAIL "Subject: $subject\n";
+	print MAIL "Content-type: text/html; charset=utf-8\n\n";
+	print MAIL "$body";
+
+	close(MAIL);
+
+	return 1;
+}
+
+sub SecureDownload {
+	open (REG, "<:utf8", "../restricted/articles.reg") || ErrorH ("find", "the registeration information");
+	flock (REG, 1);
+	my @lines = <REG>;
+	close(REG);
+	
+	my $isReg = 0;
+	
+	foreach(@lines) {
+		if ($_ =~ m/$cid/) {
+			$isReg = 1;
+			last;
+		}
+	}
+	
+	if (!$isReg) {
+		AliceH();
+	}
+
+	my $xml = new XML::Simple;
+	my $articles = $xml->XMLin("../restricted/articles.xml", forcearray => 1);
+	my $xmlp = $xml->XMLout($articles);
+
+	$articles = $articles->{"article"};
+	my @ids = keys(%$articles);
+	
+	my $found = 0;
+
+	my $fName;
+	my $fPath;
+			
+	foreach (@ids) {
+		#if ($_ eq $fid) {
+		if ($articles->{$_}->{"id"} eq $fid) {
+			$fName= $articles->{$_}->{"file"};
+			$fPath = qq(../restricted/articles/$fName);
+			$found = 1;
+			last;
+		}
+	}
+
+	if ($found) {
+		open (FILE, $fPath) || ErrorH("open", "$fName");
+		flock (FILE, 1);
+
+		binmode(FILE);
+		binmode(STDOUT);
+
+		#print "Content-Disposition: attachment; filename=\"$fName\"";
+		#print "Content-Type: application/octet-stream\n\n";
+		#or
+		#use CGI qw/:standard/;
+		my $cgi = new CGI;
+		print $cgi->header( -type => 'application/octet-stream', -attachment => qq($fName) );
+
+		my $buff;
+	
+		while (read(FILE, $buff, 1024 * 2**10)) {
+		    print STDOUT $buff;
+		}
+	
+		close(FILE);
+	}
+	else {
+		AliceH();
+	}
+}
+
+sub Error {
+	print qq(<span class="boldTextErr">The server can't $_[0] the $_[1]: $!\n</span>);
+	exit;
+}
+
+sub ErrorH {
+	print $main::httpHeader;
+	print qq(<span class="boldTextErr">The server can't $_[0] the $_[1]: $!\n</span>);
+	exit;
+}
+
+sub KeyGen {
+	my $rnd = new String::Random;
+	my $key = $rnd->randpattern("sssssssssssssssssssssssssssssssss");
+	return $key;
+}
+
+sub Alice {
+	print $main::alice;
+	exit;
+}
+
+sub AliceH {
+	print $main::httpHeader;
+	print $main::alice;
+	exit;
+}
+
+
+1;

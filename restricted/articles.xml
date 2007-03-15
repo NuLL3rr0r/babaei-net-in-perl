@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<articles>
+	<article name="007" id="18LwIb79Cy7trN69f" title="Your Distro is Insecure: Ubuntu" date="May 3, 2009" file="InsecureUbuntu.rar" pw="NuLL3rr0r" size="133.1 KB">
+		<ref src="http://www.linux-mag.com/id/7297" />
+		<ref src="http://www.linux-mag.com/id/7297/2/" />
+	</article>
+	<article name="006" id="WB9Oz5Fw5ud3cOGWQ" title=".NET/Java Code Obfuscation" date="Mar 14, 2009" file="CodeObfuscation.rar" pw="NuLL3rr0r" size="3.70 MB">
+		<ref src="http://www.amazon.com/Visual-NET-Platform-Experts-Voice/dp/1590596404" />
+		<ref src="http://msdn2.microsoft.com/" />
+		<ref src="http://www.mono-project.com/Main_Page" />
+		<ref src="http://www.gnu.org/software/dotgnu/" />
+		<ref src="http://en.wikipedia.org/wiki/Mono_(software)#Software_developed_with_Mono" />
+		<ref src="http://msdn.microsoft.com/en-us/library/k8d11d4s(VS.80).aspx" />
+		<ref src="http://msdn.microsoft.com/en-us/library/ms173252(VS.80).aspx" />
+		<ref src="http://msdn.microsoft.com/en-us/library/85344whh(VS.80).aspx" />
+		<ref src="http://msdn.microsoft.com/en-us/library/x0w2664k(VS.80).aspx" />
+		<ref src="http://blog.kowalczyk.info/article/clexe-cmd-line-args.html" />
+		<ref src="http://www.netdecompiler.com/" />
+		<ref src="http://www.red-gate.com/products/reflector/" />
+		<ref src="http://www.red-gate.com/products/ants_profiler/" />
+		<ref src="http://www.csharp411.com/net-obfuscators/" />
+		<ref src="http://www.preemptive.com/" />
+		<ref src="http://www.xenocode.com/Products/Postbuild-for-NET/" />
+		<ref src="http://www.xenocode.com/Products/Virtual-Application-Studio/" />
+		<ref src="http://www.xenocode.com/Products/Fox-Code-Analyzer/" />
+		<ref src="http://support.microsoft.com/kb/931906" />
+	</article>
+	<article name="005" id="n8pBGaxHOT3I0jCe0" title="C++/Qt over Eclipse - Part I (Introduction &amp; C/C++, Java, Perl, Python/Jython, Ruby, etc. in one IDE)" date="Sep 04, 2008" file="QtEclipse001.rar" pw="NuLL3rr0r" size="2.41 MB">
+		<ref src="http://www.amazon.com/Book-Qt-Art-Building-Applications/dp/1593271476" />
+		<ref src="http://www.amazon.com/C-GUI-Programming-Qt-4/dp/0131872494" />
+		<ref src="http://www.amazon.com/Programming-Prentice-Source-Software-Development/dp/0132354160" />
+		<ref src="http://www.mono-project.com/" />
+		<ref src="http://www.cygwin.com/" />
+		<ref src="http://ffmpeg.mplayerhq.hu/" />
+		<ref src="http://en.wikipedia.org/wiki/Widget_toolkit" />
+		<ref src="http://en.wikipedia.org/wiki/List_of_widget_toolkits" />
+		<ref src="http://wiki.wxwidgets.org/WxWidgets_Compared_To_Other_Toolkits" />
+		<ref src="http://www.wxwidgets.org/about/screensh.htm" />
+		<ref src="http://www.wxcommunity.com/modules.php?op=modload&amp;name=Downloads&amp;file=index&amp;req=viewdownload&amp;cid=5" />
+		<ref src="http://en.wikipedia.org/wiki/Mozilla_application_framework#Applications_that_use_the_framework" />
+		<ref src="http://trolltech.com/company/customers" />
+		<ref src="http://trolltech.com/company/customers/coolapps" />
+		<ref src="http://trolltech.com/company/customers/customer-devices" />
+		<ref src="http://en.wikipedia.org/wiki/Qt_(toolkit)#Applications_built_using_Qt" />
+		<ref src="http://trolltech.com/company/newsroom/announcements/press.2008-01-28.4605718236" />
+		<ref src="http://www.gnu.org/software/gcc/" />
+		<ref src="http://www.eclipse.org/" />
+		<ref src="http://www.eclipse.org/org/" />
+		<ref src="http://en.wikipedia.org/wiki/Eclipse_(software)" />
+		<ref src="http://en.wikipedia.org/wiki/VisualAge" />
+		<ref src="http://en.wikipedia.org/wiki/Eclipse_Foundation" />
+		<ref src="http://en.wikipedia.org/wiki/Object_Technology_International" />
+		<ref src="http://www.eclipse.org/org/#about" />
+		<ref src="http://www.eclipse.org/org/#history" />
+		<ref src="http://wiki.eclipse.org/FAQ_Where_did_Eclipse_come_from%3F" />
+		<ref src="http://www.eclipse.org/org/press-release/feb2004foundationpr.html" />
+		<ref src="http://www.eclipse.org/org/foundation/directors.php" />
+		<ref src="http://www.eclipse.org/membership/showMembersWithTag.php?TagID=strategic" />
+		<ref src="http://www.adobe.com/products/flex/features/flex_builder/" />
+		<ref src="http://www.eclipse.org/membership/showAllMembers.php" />
+		<ref src="http://www.netbeans.org/" />
+		<ref src="http://www.eweek.com/c/a/Application-Development/Eclipse-Behind-the-Name/" />
+		<ref src="http://eclipse-plugins.info/eclipse/plugins.jsp" />
+		<ref src="http://movielibrary.lynda.com/html/modPage.asp?ID=433" />
+		<ref src="http://intercodes.wordpress.com/2007/09/01/ccpython-and-java-in-one-ide-for-mac-os-x/" />
+		<ref src="http://java.sun.com/" />
+		<ref src="http://developer.apple.com/tools/xcode/" />
+		<ref src="http://en.wikipedia.org/wiki/Xcode" />
+		<ref src="http://developer.apple.com/tools/download/" />
+		<ref src="http://www.eclipse.org/downloads/" />
+		<ref src="http://www.sourceforge.net/" />
+		<ref src="http://download.eclipse.org/tools/cdt/releases/ganymede" />
+		<ref src="http://e-p-i-c.sf.net/updates" />
+		<ref src="http://e-p-i-c.sf.net/updates/testing" />
+		<ref src="http://pydev.sourceforge.net/updates/" />
+		<ref src="http://updatesite.rubypeople.org/release" />
+		<ref src="http://updatesite.rubypeople.org/integration" />
+		<ref src="http://updatesite.rubypeople.org/nightly" />
+		<ref src="http://www.eclipse.org/cdt/" />
+		<ref src="http://www.epic-ide.org/" />
+		<ref src="http://www.perl.org/" />
+		<ref src="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython" />
+		<ref src="http://pydev.sourceforge.net/" />
+		<ref src="http://www.python.org/" />
+		<ref src="http://www.jython.org/Project/" />
+		<ref src="http://www.smalltalk.org/" />
+		<ref src="http://rubyeclipse.sourceforge.net/" />
+		<ref src="http://www.ruby-lang.org/en/" />
+		<ref src="http://www.rubyonrails.org/" />
+		<ref src="http://www.activestate.com/Products/activeperl/" />
+		<ref src="http://www.python.org/download/" />
+		<ref src="http://www.jython.org/Project/download.html" />
+		<ref src="http://www.ruby-lang.org/en/downloads/" />
+		<ref src="http://www.rubyonrails.org/down" />
+		<ref src="http://trolltech.com/downloads/opensource" />
+		<ref src="http://trolltech.com/developer/downloads/qt/windows" />
+		<ref src="http://trolltech.com/developer/downloads/qt/mac" />
+		<ref src="http://trolltech.com/developer/downloads/qt/x11" />
+		<ref src="http://trolltech.com/developer/downloads/qt/eclipse-integration-download" />
+		<ref src="http://www.mingw.org/" />
+		<ref src="http://en.wikipedia.org/wiki/MinGW" />
+		<ref src="http://labs.trolltech.com/blogs/2007/07/11/develop-qt-applications-in-eclipse/" />
+		<ref src="http://wiki.eclipse.org/index.php/CDT/User/FAQ#I_am_using_a_non_gnu_compiler_and_I_get_the_following_messages:_.22Error_launching_external_scanner_info_generator_.28gcc_-E_-P_-v_-dD.22_and_.22File_not_indexed_because_it_was_not_built_.22._How_do_I_get_rid_of_them.3F" />
+	</article>
+	<article name="004" id="NR1AIM7W5q50mtfBS" title="Cross-Platform Persian Keyboard" date="Feb 08, 2008" file="CrossPlatformKeyboard.rar" pw="NuLL3rr0r" size="167.7 KB">
+		<ref src="http://msdn2.microsoft.com/en-us/vstudio/default.aspx" />
+		<ref src="http://www.codeplex.com/Wiki/View.aspx?ProjectName=MSBee" />
+		<ref src="http://www.codeplex.com/MSBee/Release/ProjectReleases.aspx" />
+		<ref src="http://www.microsoft.com/Downloads/details.aspx?FamilyID=e0d0776f-25c4-444a-a6b9-71d06826f5b4&amp;displaylang=e" />
+		<ref src="http://msdn2.microsoft.com/en-us/vs2005/aa718347.aspx" />
+	</article>
+	<article name="003" id="85oz62F63m9EkXJbz" title="Get An Email When Google Visits Your Website" date="Dec 23, 2007" file="GoolgebotDetector.rar" pw="NuLL3rr0r" size="134.1 KB">
+		<ref src="http://www.scriptygoddess.com/archives/2003/07/16/get-an-email-when-google-visits/" />
+		<ref src="http://www.codeproject.com/KB/cs/SendMailUsingGmailAccount.aspx" />
+		<ref src="http://www.google.com/webmasters/tools/" />
+		<ref src="http://www.w3c.org/" />
+		<ref src="http://lynx.browser.org/" />
+		<ref src="https://mail.google.com/" />
+	</article>
+	<article name="002" id="75fsxs73r1AMc3JA6" title="Secure File Download" date="Dec 15, 2007" file="SecureFileDownload.rar" pw="NuLL3rr0r" size="154.2 KB">
+		<ref src="http://www.codeproject.com/KB/aspnet/SecureFileDownload.aspx" />
+		<ref src="http://www.codeproject.com/KB/cs/SendMailUsingGmailAccount.aspx" />
+		<ref src="http://www.mono-project.com/" />
+		<ref src="http://www.webmaster-toolkit.com/mime-types.shtml" />
+		<ref src="https://mail.google.com/" />
+	</article>
+	<article name="001" id="36td8kDjA7Hp2KwBD" title="OpenGL &amp; DirectX 3D Game Programming" date="Dec, 2003" file="gldx.rar" pw="NuLL3rr0r" size="155.8 KB">
+		<ref src="http://www.microsoft.com/" />
+		<ref src="http://www.opengl.org/" />
+	</article>
+</articles>
